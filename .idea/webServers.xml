@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="91ca396a-89c5-40e5-a341-081bc749e57c" name="vultr" url="http://www.all2key.com">
+        <fileTransfer host="45.32.86.138" port="21" rootFolder="/var/www/weapp">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

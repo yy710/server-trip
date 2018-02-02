@@ -1,0 +1,20 @@
+{
+  "name": "weapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "weapp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yy710",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "eventproxy": "^1.0.0",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30",
+    "wechat": "^2.1.0",
+    "weixin-pay": "^1.1.7",
+    "xml2js": "^0.4.17"
+  }
+}

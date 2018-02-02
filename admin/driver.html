@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>司机管理</title>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
+</head>
+<body>
+<div>
+<form method="get" action="https://www.xingshenxunjiechuxing.com/admin/addDriver">
+
+    注册识别码 <input type="text" name="openid" value="" size="30">
+    手机号码<input type="text" name="phone" value="" size="10">
+    汽车牌照号<input type="text" name="carid" value="" size="10">
+    司机姓名<input type="text" name="name" value="" size="5">
+    <input type="submit" value="点击此处注册司机信息">
+
+</form>
+</div>
+<div>
+<form method="get" action="https://www.xingshenxunjiechuxing.com/admin/addBus">
+
+    线路编号<input type="text" name="id" value="001" style="width: 50px">
+    发车地点<input type="text" name="startLoc" value="普洱" style="width: 100px">
+    发车时间<input type="datetime-local" name="startTime" value="2017-09-08 09:00" style="width: 300px">
+    到站地点<input type="text" name="endLoc" value="景洪" style="width: 100px">
+    公里数<input type="number" name="distance" value="130" style="width: 100px">
+    单价：￥<input type="number" name="price" value="50" style="width: 200px">元
+    车票(座位)数量<input type="number" name="tickes" value="4" style="width: 100px">
+    车辆牌照<input type="text" name="carid" value="云J12345" style="width: 200px"">
+    <input type="submit" value="点击此处修改/增加路线">
+
+</form>
+</div>
+<div>
+<form method="get" action="https://www.xingshenxunjiechuxing.com/admin/setTaxiPrice">
+
+    网约车起步价格￥<input type="number" name="starting" value="7">元
+    网约车每公里单价￥<input type="number" name="unit" value="2">元
+    <input type="submit" value="点击此处修改价格设置">
+
+</form>
+</div>
+
+</body>
+</html>
