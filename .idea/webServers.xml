@@ -10,6 +10,14 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
+      <webServer id="980cb25d-4532-495e-9d57-af00a5dfbe94" name="aliyun" url="http://39.108.1.78">
+        <fileTransfer host="39.108.1.78" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

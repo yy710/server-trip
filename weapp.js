@@ -41,6 +41,8 @@ app.use(function (req, res, next) {
 
     //define req.data
     req.data = {};
+    // parse req data structor
+    req.data.query = JSON.parse(req.query.data);
     req.data.sid = req.query.sid || null;
 
     next();
@@ -103,6 +105,9 @@ app.use('/mp', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerM
 //管理界面 API 路由
 let routerAdmin = require('./admin.js').setRouter(express.Router());
 app.use('/admin', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerAdmin);
+
+let routerRate = require('./rate.js').setRouter(express.Router());
+app.use('/rate', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerRate);
 
 
 //---------------------------------------------------------------------------------------

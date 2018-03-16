@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="xsxjAliyun">
+  <component name="PublishConfigData" autoUpload="Always" serverName="aliyun">
     <serverData>
+      <paths name="aliyun">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/rate" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="iot">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="vultr">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="xsxjAliyun">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/weapp" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
