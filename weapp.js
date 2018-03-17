@@ -41,9 +41,7 @@ app.use(function (req, res, next) {
 
     //define req.data
     req.data = {};
-    // parse req data structor
-    req.data.query = JSON.parse(req.query.data);
-    req.data.sid = req.query.sid || null;
+    req.data.sid = req.query.sid || 0;
 
     next();
 });
@@ -146,7 +144,7 @@ function initDb(dbUrl) {
         MongoClient.connect(dbUrl, function (err, db) {
             assert.equal(null, err);
             req.db = db;//deprecated
-            //req.data.db = db;//approve
+            req.data.db = db;//approve
             next();
         });
     };
