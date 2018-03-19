@@ -11,7 +11,7 @@ exports.setRouter = function (router) {
 
     _router.use('/dksale', function (req, res, next) {
         let rateData = req.data.query;
-        rateData.day = new Date();
+        rateData.date = new Date();
         rateData.sid = req.data.sid;
         //console.log("req.data.query: ", _req);
 
@@ -32,23 +32,51 @@ exports.setRouter = function (router) {
     _router.use('/getXlsx', function (req, res, next) {
 
         const col = req.data.db.collection("rate");
-        col.find({}).toArray()
-            .then(data1 => {
+        col.aggregate([{
+            $project: {
+                //_id: 0,
+                rateCheckbox: 1,
+                star: 1,
+                date: {
+                    $dateToString: {
+                        format: "%Y-%m-%d %H:%M:%S",
+                        date: {
+                            $add: ['$date', 28800000]
+                        }
+                    }
+                }
+            }
+        }])
+            .toArray()
+            .then(log)
+            .then(data => {
 
-
-                var data = [ { name : "Peter", lastName : "Parker", isSpider : true } ,
-                    { name : "Remy",  lastName : "LeBeau", powers : ["kinetic cards"] }];
-
+                let data1 = [{name: "Peter", lastName: "Parker", isSpider: true, _id: "5aaf4ba798c75b0ad6e2de73"},
+                    {name: "Remy", lastName: "LeBeau", powers: ["kinetic cards"], day: "2018-03-19T05:33:27.684Z"}];
 
                 /* Generate automatic model for processing (A static model should be used) */
-                var model = mongoXlsx.buildDynamicModel(data);
-
-                /* Generate Excel */
+                let model = mongoXlsx.buildDynamicModel(data);
                 mongoXlsx.mongoData2Xlsx(data, model, function (err, data) {
-                    console.log('File saved at:', data.fullPath);
-                    res.sendFile('./'+data.fileName);
-                });
+                    //console.log('File saved at:', data.fullPath);
 
+                    let options = {
+                        root: '/var/www/html/rate/',
+                        dotfiles: 'deny',
+                        headers: {
+                            'x-timestamp': Date.now(),
+                            'x-sent': true
+                        }
+                    };
+
+                    //var fileName = req.params.name;
+                    res.sendFile(data.fileName, options, function (err) {
+                        if (err) {
+                            //next(err);
+                        } else {
+                            console.log('Sent:', data.fileName);
+                        }
+                    });
+                });
             })
             .catch(console.log);
 
@@ -56,3 +84,8 @@ exports.setRouter = function (router) {
 
     return _router;
 };
+
+function log(r) {
+    console.log("promise: ", r);
+    return Promise.resolve(r);
+}
