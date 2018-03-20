@@ -21,7 +21,7 @@ exports.setRouter = function (router) {
             .catch(r => res.json({id: 0, msg: 'failed'}));
     });
 
-    _router.use('/queryStar', function (req, res, next) {
+    _router.use('/query-star', function (req, res, next) {
         const col = req.data.db.collection("rate");
         col.aggregate([{$group: {_id: "$respondents", avg: {$avg: "$star.id"}}}])
             .toArray()
@@ -29,7 +29,7 @@ exports.setRouter = function (router) {
             .catch(e => res.json({id: 0, msg: "faile"}));
     });
 
-    _router.use('/getXlsx', function (req, res, next) {
+    _router.use('/get-xlsx', function (req, res, next) {
 
         const col = req.data.db.collection("rate");
         col.aggregate([{
