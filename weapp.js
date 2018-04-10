@@ -89,21 +89,22 @@ app.use('/admin', express.static('admin'));
 
 
 //-------------------------------------------------------------------------------------------
-//let routerSfrf = require('./sfrf.js').setRouter(express.Router());
-//app.use('/sfrf', initDb('mongodb://yaoling:yyL0529@localhost:30000/sfrf'), routerSfrf);
+// let routerSfrf = require('./sfrf.js').setRouter(express.Router());
+// app.use('/sfrf', initDb('mongodb://yaoling:yyL0529@localhost:30000/sfrf'), routerSfrf);
 
-//小程序 API 路由
+// 小程序 API 路由
 let routerTrip = require('./trip.js').setRouter(express.Router());
 app.use('/trip', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerTrip);
 
-//司机端公众号 API 路由
+// 司机端公众号 API 路由
 let routerMp = require('./dispatch.js').setRouter(express.Router());
 app.use('/mp', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerMp);
 
-//管理界面 API 路由
+// 管理界面 API 路由
 let routerAdmin = require('./admin.js').setRouter(express.Router());
 app.use('/admin', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerAdmin);
 
+// 迪坤客户满意度调查路由
 let routerRate = require('./rate.js').setRouter(express.Router());
 app.use('/rate', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerRate);
 

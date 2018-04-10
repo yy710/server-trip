@@ -10,10 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "assert": "^1.4.1",
+    "connect-mongodb-session": "^2.0.2",
     "eventproxy": "^1.0.0",
     "express": "^4.15.3",
     "mongo-xlsx": "^1.0.12",
     "mongodb": "^2.2.30",
+    "wafer-node-session": "^1.0.10",
     "wechat": "^2.1.0",
     "wechat-api": "^1.35.1",
     "weixin-pay": "^1.1.7",

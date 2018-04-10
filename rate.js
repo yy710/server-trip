@@ -1,4 +1,13 @@
-var mongoXlsx = require('mongo-xlsx');
+let assert = require('assert');
+let mongoXlsx = require('mongo-xlsx');
+const session = require('wafer-node-session');
+let MongoDBStore = require('./mongodb-ssesion')(session);
+
+const weappConfig = {
+    //token: 'nodejsForXsxjmp',
+    appid: 'wx7815177f192bfac4',
+    appsecret: '33f1fc18804b42413ac73cd04eda2eb6'
+};
 
 exports.setRouter = function (router) {
     let _router = router;
@@ -8,6 +17,29 @@ exports.setRouter = function (router) {
         req.data.query = req.query.data ? JSON.parse(req.query.data) : req.query;
         next();
     });
+
+    _router.use(function (req, res, next) {
+        session({
+            // 小程序 appId
+            appId: weappConfig.appid,
+            // 小程序 appSecret
+            appSecret: weappConfig.appsecret,
+            // 登录地址
+            loginPath: '/login',
+            // 会话存储
+            store: new MongoDBStore({ db: req.data.db, collection: 'rateSessions'})
+        })(req, res, next);
+    });
+
+    _router.use('/me', function (request, response, next) {
+        if (request.session) {
+            // 从会话获取用户信息
+            response.json(request.session.userInfo);
+        } else {
+            response.json({nobody: true});
+        }
+    });
+
 
     _router.use('/dksale', function (req, res, next) {
         let rateData = req.data.query;
