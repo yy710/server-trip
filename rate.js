@@ -31,12 +31,13 @@ exports.setRouter = function (router) {
         })(req, res, next);
     });
 
-    _router.use('/me', function (request, response, next) {
-        if (request.session) {
+    _router.use('/me', function (req, res, next) {
+        if (req.session) {
             // 从会话获取用户信息
-            response.json(request.session.userInfo);
+            res.json(req.session.userInfo);
+            console.log("req.session: ", req.session);
         } else {
-            response.json({nobody: true});
+            res.json({nobody: true});
         }
     });
 
