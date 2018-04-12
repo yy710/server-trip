@@ -35,11 +35,11 @@ const xsxjMpConfig = {
 //全局路由
 app.use(function (req, res, next) {
     //debug req mothed
+    console.log("req.url: ", req.url);
     console.log("req.path: ", req.path);
     console.log("req.query: ", req.query);
-    //console.log("req.url: ", req.url);
 
-    //define req.data
+    //define req.data for store user data
     req.data = {};
     req.data.sid = req.query.sid || 0;
 

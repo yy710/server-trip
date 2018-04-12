@@ -31,6 +31,10 @@ exports.setRouter = function (router) {
         })(req, res, next);
     });
 
+    _router.use('/checkoutChartPwd', function (req, res, next) {
+        req.query.pwd === "2018"?res.json({ allow: true }):res.json({ allow: false });
+    });
+
     _router.use('/me', function (req, res, next) {
         if (req.session) {
             // 从会话获取用户信息
