@@ -27,30 +27,45 @@ exports.setRouter = function (router) {
             // 登录地址
             loginPath: '/login',
             // 会话存储
-            store: new MongoDBStore({ db: req.data.db, collection: 'rateSessions'})
+            store: new MongoDBStore({db: req.data.db, collection: 'rateSessions'})
         })(req, res, next);
     });
 
     _router.use('/checkoutChartPwd', function (req, res, next) {
-        req.query.pwd === "2018"?res.json({ allow: true }):res.json({ allow: false });
+        req.query.pwd === "2018" ? res.json({allow: true}) : res.json({allow: false});
     });
 
     _router.use('/me', function (req, res, next) {
         if (req.session) {
+            //console.log("req.session: ", req.session);
             // 从会话获取用户信息
-            res.json(req.session.userInfo);
-            console.log("req.session: ", req.session);
+            let _userInfo = req.session.userInfo;
+
+            req.data.db.collection('rate')
+                .find({openid: _userInfo.openId})
+                .limit(1)
+                .next()
+                .then(log)
+                .then(doc => {
+                    _userInfo.money = doc.money;
+                    delete _userInfo.openId;
+                    res.json(_userInfo);
+                })
+                .catch(console.log);
         } else {
             res.json({nobody: true});
         }
     });
 
 
-    _router.use('/dksale', function (req, res, next) {
+    _router.use('/submit', function (req, res, next) {
         let rateData = req.data.query;
         rateData.date = new Date();
         rateData.sid = req.data.sid;
+        rateData.openid = req.session.userInfo.openId;
         //console.log("req.data.query: ", _req);
+
+        rateData.money = rateData.phone ? 50 : 0;
 
         req.db.collection("rate")
             .insertOne(rateData)
