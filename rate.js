@@ -57,6 +57,9 @@ exports.setRouter = function (router) {
         }
     });
 
+    _router.use('/init', function(req, res, next){
+        res.json({ notic: "提示：近日可能会有厂家400电话回访，请注意接听，感谢配合！" });
+    });
 
     _router.use('/submit', function (req, res, next) {
         let rateData = req.data.query;
