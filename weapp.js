@@ -15,6 +15,7 @@ let wechat = require('wechat');
 let session = require('./session.js').session;
 let MongoClient = require('mongodb').MongoClient;
 let WechatAPI = require('wechat-api');
+let SocketServer = require('ws');
 
 const tripConfig = {
     token: 'node.jsForWeappTrip',
@@ -33,6 +34,7 @@ const xsxjMpConfig = {
 };
 
 //全局路由
+//app.use(express.json());
 app.use(function (req, res, next) {
     //debug req mothed
     console.log("req.url: ", req.url);
@@ -108,6 +110,9 @@ app.use('/admin', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), rout
 let routerRate = require('./rate.js').setRouter(express.Router());
 app.use('/rate', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerRate);
 
+// 车聚购微信小程序路由
+let routerFlashSale = require('./flash-sale.js').setRouter(express.Router());
+app.use('/flashsale', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerFlashSale);
 
 //---------------------------------------------------------------------------------------
 const options = {
@@ -115,8 +120,55 @@ const options = {
     //ca: [fs.readFileSync('./ca/ca.crt')],
     cert: fs.readFileSync('./ssl/214230172760996.pem')
 };
-const port = 443;
+
 let server = https.createServer(options, app);
+let wss = new SocketServer.Server({server});
+
+wss.on('connection', function (socket, req) {
+    console.log("wss.clients.size: ", wss.clients.size);
+
+    const products = [
+        {
+            name: "比亚迪 宋MAX",
+            price: 10.99,
+            model: "2017款 1.5T 7座MPV",
+            image: "../../images/song-max-01.jpg",
+            amount: 5,
+            status: { id: 1, msg: "即将开始..." },
+            timer: { start: new Date(2018, 3, 19, 22, 31, 5, 0), end: new Date }
+        },
+        {
+            name: "比亚迪 唐100",
+            price: 28.5,
+            model: "2017款 2.0T 5座SUV",
+            image: "../../images/tang-01.jpg",
+            amount: 1,
+            status: { id: 2, msg: "正在抢购中..." },
+            timer: { start: new Date(), end: new Date }
+        },
+        {
+            name: "比亚迪 F0",
+            price: 3.99,
+            model: "2018款 1.0 A0级",
+            image: "../../images/song-max-01.jpg",
+            amount: 3,
+            status: { id: 4, msg: "已抢完..." },
+            timer: { start: new Date(), end: new Date(2018, 3, 19, 22, 31, 5, 0) }
+        }
+    ];
+
+    socket.on('message', function (message) {
+        console.log('received: %s', message);
+    });
+
+    socket.send(JSON.stringify(products), { binary: false });
+
+    socket.on('close', function () {
+        console.log("websocket connection closed");
+    });
+});
+
+const port = 443;
 server.listen(port, function () {
     console.log('https server is running on port ', port);
 });
