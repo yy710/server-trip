@@ -122,20 +122,25 @@ const options = {
 };
 
 let server = https.createServer(options, app);
-let wss = new SocketServer.Server({server});
+let wss = new SocketServer.Server({server}, function () {
+    console.log("websocket server is running");
+});
 
 wss.on('connection', function (socket, req) {
     console.log("wss.clients.size: ", wss.clients.size);
 
-    const products = [
+    let products = [
         {
             name: "比亚迪 宋MAX",
             price: 10.99,
             model: "2017款 1.5T 7座MPV",
             image: "../../images/song-max-01.jpg",
             amount: 5,
-            status: { id: 1, msg: "即将开始..." },
-            timer: { start: new Date(2018, 3, 19, 22, 31, 5, 0), end: new Date }
+            status: {id: 'wait', msg: "即将开始..."},
+            expire: {
+                start: new Date('2018/04/23 12:23:22+0800').getTime(),
+                end: new Date('2018/04/23 14:30:00+0800').getTime()
+            }
         },
         {
             name: "比亚迪 唐100",
@@ -143,8 +148,11 @@ wss.on('connection', function (socket, req) {
             model: "2017款 2.0T 5座SUV",
             image: "../../images/tang-01.jpg",
             amount: 1,
-            status: { id: 2, msg: "正在抢购中..." },
-            timer: { start: new Date(), end: new Date }
+            status: {id: 'start', msg: "正在抢购中..."},
+            expire: {
+                start: (new Date('2018/04/22 1:23:22+0800')).getTime(),
+                end: new Date('2018/04/23 1:23:22+0800').getTime()
+            }
         },
         {
             name: "比亚迪 F0",
@@ -152,16 +160,19 @@ wss.on('connection', function (socket, req) {
             model: "2018款 1.0 A0级",
             image: "../../images/song-max-01.jpg",
             amount: 3,
-            status: { id: 4, msg: "已抢完..." },
-            timer: { start: new Date(), end: new Date(2018, 3, 19, 22, 31, 5, 0) }
+            status: {id: 'end', msg: "抢购结束..."},
+            expire: {start: new Date().getTime(), end: new Date().getTime()}
         }
     ];
+
+    //console.log("products: ", JSON.stringify(products));
 
     socket.on('message', function (message) {
         console.log('received: %s', message);
     });
 
-    socket.send(JSON.stringify(products), { binary: false });
+    socket.send(JSON.stringify(products), {binary: false});
+    // socket.send(products, { binary: false });
 
     socket.on('close', function () {
         console.log("websocket connection closed");
