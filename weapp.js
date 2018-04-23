@@ -33,6 +33,45 @@ const xsxjMpConfig = {
     appsecret: 'c7931d20dd605e4ef0d208c08e054285'
 };
 
+let products = [
+    {
+        id: '001',
+        name: "比亚迪 宋MAX",
+        price: 10.99,
+        model: "2017款 1.5T 7座MPV",
+        image: "../../images/song-max-01.jpg",
+        amount: 5,
+        status: {id: 'wait', msg: "即将开始..."},
+        expire: {
+            start: new Date('2018/04/23 16:05:22+0800').getTime(),
+            end: new Date('2018/04/23 16:06:00+0800').getTime()
+        }
+    },
+    {
+        id: '002',
+        name: "比亚迪 唐100",
+        price: 28.5,
+        model: "2017款 2.0T 5座SUV",
+        image: "../../images/tang-01.jpg",
+        amount: 1,
+        status: {id: 'start', msg: "正在抢购中..."},
+        expire: {
+            start: (new Date('2018/04/22 1:23:22+0800')).getTime(),
+            end: new Date('2018/04/24 1:23:22+0800').getTime()
+        }
+    },
+    {
+        id: '003',
+        name: "比亚迪 F0",
+        price: 3.99,
+        model: "2018款 1.0 A0级",
+        image: "../../images/song-max-01.jpg",
+        amount: 3,
+        status: {id: 'end', msg: "抢购结束..."},
+        expire: {start: new Date().getTime(), end: new Date().getTime()}
+    }
+];
+
 //全局路由
 //app.use(express.json());
 app.use(function (req, res, next) {
@@ -112,7 +151,10 @@ app.use('/rate', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), route
 
 // 车聚购微信小程序路由
 let routerFlashSale = require('./flash-sale.js').setRouter(express.Router());
-app.use('/flashsale', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), routerFlashSale);
+app.use('/flashsale', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), (req, res, next)=>{
+    req.data.products = products;
+    next();
+}, routerFlashSale);
 
 //---------------------------------------------------------------------------------------
 const options = {
@@ -128,42 +170,6 @@ let wss = new SocketServer.Server({server}, function () {
 
 wss.on('connection', function (socket, req) {
     console.log("wss.clients.size: ", wss.clients.size);
-
-    let products = [
-        {
-            name: "比亚迪 宋MAX",
-            price: 10.99,
-            model: "2017款 1.5T 7座MPV",
-            image: "../../images/song-max-01.jpg",
-            amount: 5,
-            status: {id: 'wait', msg: "即将开始..."},
-            expire: {
-                start: new Date('2018/04/23 12:23:22+0800').getTime(),
-                end: new Date('2018/04/23 14:30:00+0800').getTime()
-            }
-        },
-        {
-            name: "比亚迪 唐100",
-            price: 28.5,
-            model: "2017款 2.0T 5座SUV",
-            image: "../../images/tang-01.jpg",
-            amount: 1,
-            status: {id: 'start', msg: "正在抢购中..."},
-            expire: {
-                start: (new Date('2018/04/22 1:23:22+0800')).getTime(),
-                end: new Date('2018/04/23 1:23:22+0800').getTime()
-            }
-        },
-        {
-            name: "比亚迪 F0",
-            price: 3.99,
-            model: "2018款 1.0 A0级",
-            image: "../../images/song-max-01.jpg",
-            amount: 3,
-            status: {id: 'end', msg: "抢购结束..."},
-            expire: {start: new Date().getTime(), end: new Date().getTime()}
-        }
-    ];
 
     //console.log("products: ", JSON.stringify(products));
 
