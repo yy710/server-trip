@@ -62,13 +62,15 @@ exports.setRouter = function (router) {
     });
 
     _router.use('/init', function(req, res, next){
-        res.json({ notic: "提示：近日可能会有厂家400电话回访，请注意接听，感谢配合！" });
+        res.json(JSON.stringify(req.data.products));
     });
 
     _router.use('/buy', function (req, res, next) {
         let saveData = req.data.query;
         saveData.date = new Date();
         //saveData.sid = req.data.sid;
+        if(!'userInfo' in req.session)return;
+
         saveData.openid = req.session.userInfo.openId;
 
         let _products = req.data.products.map(item=>{
@@ -82,9 +84,14 @@ exports.setRouter = function (router) {
         req.db.collection("flashsale")
             .insertOne(saveData)
             .then(r => {
-                res.json({status:{id: 1, msg: 'success'}, products: _products})
+                req.data.products = _products;
+                //res.json({status:{id: 1, msg: 'success'}});
+                req.data.wss.broadcast(JSON.stringify(_products));
             })
-            .catch(r => res.json({id: 0, msg: 'failed'}));
+            .catch(r => {
+                console.log("error: ", r);
+                res.json({id: 0, msg: 'failed'});
+            });
     });
 
     _router.use('/query-star', function (req, res, next) {

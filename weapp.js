@@ -153,6 +153,7 @@ app.use('/rate', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), route
 let routerFlashSale = require('./flash-sale.js').setRouter(express.Router());
 app.use('/flashsale', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), (req, res, next)=>{
     req.data.products = products;
+    req.data.wss = wss;
     next();
 }, routerFlashSale);
 
@@ -168,16 +169,22 @@ let wss = new SocketServer.Server({server}, function () {
     console.log("websocket server is running");
 });
 
+wss.broadcast = function (data) {
+    wss.clients.forEach(function (client) {
+        if (client.readyState === SocketServer.OPEN) {
+            client.send(data);
+        }
+    });
+};
+
 wss.on('connection', function (socket, req) {
     console.log("wss.clients.size: ", wss.clients.size);
-
-    //console.log("products: ", JSON.stringify(products));
 
     socket.on('message', function (message) {
         console.log('received: %s', message);
     });
 
-    socket.send(JSON.stringify(products), {binary: false});
+    //socket.send(JSON.stringify(products), {binary: false});
     // socket.send(products, { binary: false });
 
     socket.on('close', function () {
