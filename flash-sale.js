@@ -4,7 +4,10 @@ const session = require('wafer-node-session');
 let MongoDBStore = require('./mongodb-ssesion')(session);
 
 const EventEmitter = require('events');
-class MyEmitter extends EventEmitter {}
+
+class MyEmitter extends EventEmitter {
+}
+
 const ev = new MyEmitter();
 
 const weappConfig = {
@@ -39,21 +42,22 @@ exports.setRouter = function (router) {
         req.query.pwd === "2018" ? res.json({allow: true}) : res.json({allow: false});
     });
 
-    _router.use('/me', function (req, res, next) {
+    _router.use('/myOrders', function (req, res, next) {
         if (req.session) {
             //console.log("req.session: ", req.session);
             // 从会话获取用户信息
             let _userInfo = req.session.userInfo;
 
-            req.data.db.collection('rate')
+            req.data.db.collection('flashsale')
                 .find({openid: _userInfo.openId})
-                .limit(1)
-                .next()
+                .toArray()
                 .then(log)
                 .then(doc => {
-                    _userInfo.money = doc.money;
-                    delete _userInfo.openId;
-                    res.json(_userInfo);
+                    let products = [];
+                    doc.forEach(order => {
+                        if (new Date() - order.date < 900000) products.push(order.product);
+                    });
+                    res.json(products);
                 })
                 .catch(console.log);
         } else {
@@ -61,7 +65,7 @@ exports.setRouter = function (router) {
         }
     });
 
-    _router.use('/init', function(req, res, next){
+    _router.use('/init', function (req, res, next) {
         res.json(JSON.stringify(req.data.products));
     });
 
@@ -69,15 +73,15 @@ exports.setRouter = function (router) {
         let saveData = req.data.query;
         saveData.date = new Date();
         //saveData.sid = req.data.sid;
-        if(!'userInfo' in req.session)return;
+        if (!'userInfo' in req.session) return;
         saveData.openid = req.session.userInfo.openId;
 
-        let _products = req.data.products.map(item=>{
-            if(item.id === saveData.productId){
+        let _products = req.data.products.map(item => {
+            if (item.id === saveData.productId) {
                 item.amount--;
-                if(item.amount < 0){
+                if (item.amount < 0) {
                     item.amount = 0;
-                }else{
+                } else {
                     saveData.product = item;
                     //save order
                     req.db.collection("flashsale")
@@ -94,8 +98,9 @@ exports.setRouter = function (router) {
             }
             return item;
         });
-        //notic all user
+        //prepare to next()
         req.data.products = _products;
+        //notice to everyone for
         req.data.wss.broadcast(JSON.stringify(_products));
     });
 
