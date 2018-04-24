@@ -70,28 +70,33 @@ exports.setRouter = function (router) {
         saveData.date = new Date();
         //saveData.sid = req.data.sid;
         if(!'userInfo' in req.session)return;
-
         saveData.openid = req.session.userInfo.openId;
 
         let _products = req.data.products.map(item=>{
             if(item.id === saveData.productId){
                 item.amount--;
-                saveData.product = item;
+                if(item.amount < 0){
+                    item.amount = 0;
+                }else{
+                    saveData.product = item;
+                    //save order
+                    req.db.collection("flashsale")
+                        .insertOne(saveData)
+                        .then(r => {
+                            res.json({id: 1, msg: 'success'});
+                            //req.data.wss.broadcast(JSON.stringify(item));
+                        })
+                        .catch(r => {
+                            console.log("error: ", r);
+                            res.json({id: 0, msg: 'failed'});
+                        });
+                }
             }
             return item;
         });
-
-        req.db.collection("flashsale")
-            .insertOne(saveData)
-            .then(r => {
-                req.data.products = _products;
-                //res.json({status:{id: 1, msg: 'success'}});
-                req.data.wss.broadcast(JSON.stringify(_products));
-            })
-            .catch(r => {
-                console.log("error: ", r);
-                res.json({id: 0, msg: 'failed'});
-            });
+        //notic all user
+        req.data.products = _products;
+        req.data.wss.broadcast(JSON.stringify(_products));
     });
 
     _router.use('/query-star', function (req, res, next) {
@@ -158,7 +163,15 @@ exports.setRouter = function (router) {
     return _router;
 };
 
+
+//------------------------------------------------------------------------------------------------------------
 function log(r) {
     console.log("promise: ", r);
     return Promise.resolve(r);
+}
+
+function mergeOptions(options, defaults) {
+    for (var key in defaults) {
+        options[key] = options[key] || defaults[key];
+    }
 }

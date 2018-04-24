@@ -41,10 +41,10 @@ let products = [
         model: "2017款 1.5T 7座MPV",
         image: "../../images/song-max-01.jpg",
         amount: 5,
-        status: {id: 'wait', msg: "即将开始..."},
+        //status: {id: 'wait', msg: "即将开始..."},
         expire: {
-            start: new Date('2018/04/23 16:05:22+0800').getTime(),
-            end: new Date('2018/04/23 16:06:00+0800').getTime()
+            start: new Date('2018/04/24 16:40:19+0800').getTime(),
+            end: new Date('2018/04/24 17:06:00+0800').getTime()
         }
     },
     {
@@ -54,10 +54,10 @@ let products = [
         model: "2017款 2.0T 5座SUV",
         image: "../../images/tang-01.jpg",
         amount: 1,
-        status: {id: 'start', msg: "正在抢购中..."},
+        //status: {id: 'start', msg: "正在抢购中..."},
         expire: {
-            start: (new Date('2018/04/22 1:23:22+0800')).getTime(),
-            end: new Date('2018/04/24 1:23:22+0800').getTime()
+            start: new Date('2018/04/24 13:23:22+0800').getTime(),
+            end: new Date('2018/04/24 18:30:21+0800').getTime()
         }
     },
     {
@@ -67,8 +67,11 @@ let products = [
         model: "2018款 1.0 A0级",
         image: "../../images/song-max-01.jpg",
         amount: 3,
-        status: {id: 'end', msg: "抢购结束..."},
-        expire: {start: new Date().getTime(), end: new Date().getTime()}
+        //status: {id: 'end', msg: "抢购结束..."},
+        expire: {
+            start: new Date('2018/04/24 14:33:17+0800').getTime(),
+            end: new Date('2018/04/24 15:20:15+0800').getTime()
+        }
     }
 ];
 
@@ -76,7 +79,7 @@ let products = [
 //app.use(express.json());
 app.use(function (req, res, next) {
     //debug req mothed
-    console.log("req.url: ", req.url);
+    //console.log("req.url: ", req.url);
     console.log("req.path: ", req.path);
     console.log("req.query: ", req.query);
 
@@ -151,11 +154,15 @@ app.use('/rate', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), route
 
 // 车聚购微信小程序路由
 let routerFlashSale = require('./flash-sale.js').setRouter(express.Router());
-app.use('/flashsale', initDb('mongodb://travel:daydayUp@localhost:30000/trip'), (req, res, next)=>{
-    req.data.products = products;
-    req.data.wss = wss;
-    next();
-}, routerFlashSale);
+app.use('/flashsale',
+    initDb('mongodb://travel:daydayUp@localhost:30000/trip'),
+    (req, res, next) => {
+        req.data.products = products;
+        req.data.wss = wss;
+        next();
+    },
+    routerFlashSale);
+
 
 //---------------------------------------------------------------------------------------
 const options = {
@@ -165,9 +172,14 @@ const options = {
 };
 
 let server = https.createServer(options, app);
-let wss = new SocketServer.Server({server}, function () {
-    console.log("websocket server is running");
+const port = 443;
+server.listen(port, function () {
+    console.log('https server is running on port ', port);
 });
+
+
+//---------------------------------------------------------------------------------------
+let wss = new SocketServer.Server({server});
 
 wss.broadcast = function (data) {
     wss.clients.forEach(function (client) {
@@ -185,16 +197,11 @@ wss.on('connection', function (socket, req) {
     });
 
     //socket.send(JSON.stringify(products), {binary: false});
-    // socket.send(products, { binary: false });
+    //socket.send(products, { binary: false });
 
     socket.on('close', function () {
         console.log("websocket connection closed");
     });
-});
-
-const port = 443;
-server.listen(port, function () {
-    console.log('https server is running on port ', port);
 });
 
 
