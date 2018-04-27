@@ -44,7 +44,7 @@ let products = [
         //status: {id: 'wait', msg: "即将开始..."},
         expire: {
             start: new Date('2018/04/24 21:50:19+0800').getTime(),
-            end: new Date('2018/04/25 23:06:00+0800').getTime()
+            end: new Date('2018/04/27 23:06:00+0800').getTime()
         }
     },
     {
@@ -53,11 +53,11 @@ let products = [
         price: 28.5,
         model: "2017款 2.0T 5座SUV",
         image: "../../images/tang-01.jpg",
-        amount: 1,
+        amount: 6,
         //status: {id: 'start', msg: "正在抢购中..."},
         expire: {
             start: new Date('2018/04/24 23:53:22+0800').getTime(),
-            end: new Date('2018/04/26 18:30:21+0800').getTime()
+            end: new Date('2018/04/29 18:30:21+0800').getTime()
         }
     },
     {
@@ -70,7 +70,7 @@ let products = [
         //status: {id: 'end', msg: "抢购结束..."},
         expire: {
             start: new Date('2018/04/25 20:33:17+0800').getTime(),
-            end: new Date('2018/04/26 15:20:15+0800').getTime()
+            end: new Date('2018/04/27 15:20:15+0800').getTime()
         }
     }
 ];

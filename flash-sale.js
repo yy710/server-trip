@@ -76,6 +76,8 @@ exports.setRouter = function (router) {
         if (!'userInfo' in req.session) return;
         saveData.openid = req.session.userInfo.openId;
 
+        req.data.db.collection('flashsale').find({"productId": req.query.productId, "date": {$gte: new Date()-900000}});
+
         let _products = req.data.products.map(item => {
             if (item.id === saveData.productId) {
                 item.amount--;
