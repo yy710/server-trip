@@ -44,7 +44,7 @@ let products = [
         //status: {id: 'wait', msg: "即将开始..."},
         expire: {
             start: new Date('2018/04/24 21:50:19+0800').getTime(),
-            end: new Date('2018/04/27 23:06:00+0800').getTime()
+            end: new Date('2018/04/28 23:06:00+0800').getTime()
         }
     },
     {
@@ -69,8 +69,8 @@ let products = [
         amount: 3,
         //status: {id: 'end', msg: "抢购结束..."},
         expire: {
-            start: new Date('2018/04/25 20:33:17+0800').getTime(),
-            end: new Date('2018/04/27 15:20:15+0800').getTime()
+            start: new Date('2018/04/29 20:33:17+0800').getTime(),
+            end: new Date('2018/04/30 15:20:15+0800').getTime()
         }
     }
 ];

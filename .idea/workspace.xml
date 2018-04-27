@@ -23,20 +23,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="flash-sale.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="flash-sale.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flash-sale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1127">
-              <caret line="78" column="120" selection-start-line="78" selection-start-column="120" selection-end-line="78" selection-end-column="120" />
+            <state relative-caret-position="346">
+              <caret line="82" column="43" lean-forward="true" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
+              <folding>
+                <element signature="e#2608#2760#0" expanded="true" />
+                <element signature="e#6134#6420#0" expanded="true" />
+                <element signature="e#6144#6289#0" expanded="true" />
+                <element signature="e#6166#6279#0" expanded="true" />
+                <element signature="e#6190#6265#0" expanded="true" />
+                <element signature="e#6299#6414#0" expanded="true" />
+                <element signature="e#6321#6404#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="weapp.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="weapp.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/weapp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+            <state relative-caret-position="-106">
+              <caret line="56" column="49" lean-forward="true" selection-start-line="56" selection-start-column="49" selection-end-line="56" selection-end-column="49" />
+              <folding>
+                <element signature="e#1076#1458#0" expanded="true" />
+                <element signature="e#1310#1452#0" expanded="true" />
+                <element signature="e#1695#1837#0" expanded="true" />
+                <element signature="e#1849#2224#0" expanded="true" />
+                <element signature="e#2076#2218#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,8 +103,8 @@
         <option value="$PROJECT_DIR$/admin.js" />
         <option value="$PROJECT_DIR$/mongodb-ssesion.js" />
         <option value="$PROJECT_DIR$/rate.js" />
-        <option value="$PROJECT_DIR$/flash-sale.js" />
         <option value="$PROJECT_DIR$/weapp.js" />
+        <option value="$PROJECT_DIR$/flash-sale.js" />
       </list>
     </option>
   </component>
@@ -107,10 +123,11 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="873" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="717" />
+    <option name="y" value="467" />
+    <option name="width" value="2380" />
+    <option name="height" value="1488" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -324,6 +341,7 @@
       <workItem from="1524531181627" duration="10140000" />
       <workItem from="1524654413302" duration="1882000" />
       <workItem from="1524813869654" duration="4910000" />
+      <workItem from="1524843675365" duration="7737000" />
     </task>
     <task id="LOCAL-00001" summary="start new server">
       <created>1501035214048</created>
@@ -336,7 +354,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="276032000" />
+    <option name="totallyTimeSpent" value="283769000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -348,14 +366,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <frame x="717" y="467" width="2380" height="1488" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info anchor="right" x="-632" y="180" width="525" height="774" id="Remote Host" order="3" visible="true" weight="0.19739583" />
+      <window_info anchor="right" x="-632" y="180" width="525" height="774" id="Remote Host" order="3" weight="0.11462789" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49156117" weight="0.1655317" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="File Transfer" order="7" visible="true" weight="0.17263158" />
+      <window_info active="true" anchor="bottom" id="File Transfer" order="7" visible="true" weight="0.17253774" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32771084" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.17227723" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -381,15 +400,15 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32771084" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.17227723" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.39813858" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32771084" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32771084" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="File Transfer" order="9" visible="true" weight="0.26760563" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.39813858" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Messages" order="7" />
       <window_info id="Favorites" order="2" sideWeight="0.5084388" side_tool="true" weight="0.22274144" />
     </layout-to-restore>
@@ -774,17 +793,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flash-sale.js">
+    <entry file="file://$PROJECT_DIR$/weapp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1127">
-          <caret line="78" column="120" selection-start-line="78" selection-start-column="120" selection-end-line="78" selection-end-column="120" />
+        <state relative-caret-position="-106">
+          <caret line="56" column="49" lean-forward="true" selection-start-line="56" selection-start-column="49" selection-end-line="56" selection-end-column="49" />
+          <folding>
+            <element signature="e#1076#1458#0" expanded="true" />
+            <element signature="e#1310#1452#0" expanded="true" />
+            <element signature="e#1695#1837#0" expanded="true" />
+            <element signature="e#1849#2224#0" expanded="true" />
+            <element signature="e#2076#2218#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/weapp.js">
+    <entry file="file://$PROJECT_DIR$/flash-sale.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+        <state relative-caret-position="346">
+          <caret line="82" column="43" lean-forward="true" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
+          <folding>
+            <element signature="e#2608#2760#0" expanded="true" />
+            <element signature="e#6134#6420#0" expanded="true" />
+            <element signature="e#6144#6289#0" expanded="true" />
+            <element signature="e#6166#6279#0" expanded="true" />
+            <element signature="e#6190#6265#0" expanded="true" />
+            <element signature="e#6299#6414#0" expanded="true" />
+            <element signature="e#6321#6404#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

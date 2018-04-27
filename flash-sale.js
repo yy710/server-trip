@@ -70,40 +70,37 @@ exports.setRouter = function (router) {
     });
 
     _router.use('/buy', function (req, res, next) {
-        let saveData = req.data.query;
-        saveData.date = new Date();
-        //saveData.sid = req.data.sid;
-        if (!'userInfo' in req.session) return;
-        saveData.openid = req.session.userInfo.openId;
+        (async function() {
+            if (!'userInfo' in req.session) return;
 
-        req.data.db.collection('flashsale').find({"productId": req.query.productId, "date": {$gte: new Date()-900000}});
+            const pid = req.query.productId;
+            const products = req.data.products;
+            const col = req.data.db.collection('flashsale');
 
-        let _products = req.data.products.map(item => {
-            if (item.id === saveData.productId) {
-                item.amount--;
-                if (item.amount < 0) {
-                    item.amount = 0;
-                } else {
-                    saveData.product = item;
-                    //save order
-                    req.db.collection("flashsale")
-                        .insertOne(saveData)
-                        .then(r => {
-                            res.json({id: 1, msg: 'success'});
-                            //req.data.wss.broadcast(JSON.stringify(item));
-                        })
-                        .catch(r => {
-                            console.log("error: ", r);
-                            res.json({id: 0, msg: 'failed'});
-                        });
-                }
-            }
-            return item;
-        });
-        //prepare to next()
-        req.data.products = _products;
-        //notice to everyone for
-        req.data.wss.broadcast(JSON.stringify(_products));
+            let product = products.find(p => p.id === pid);
+            let pIndex = products.findIndex(p=>p.id===pid);
+            const store = product.amount - await getProductSalesVol(col, pid);
+            if (store <= 0) return product;
+
+            product.amount--;
+            let order = {
+                user: req.session.userInfo,
+                product: product,
+                date: new Date(),
+                status: {id: 0, msg: "定金未付"}
+            };
+            //save order
+            col.insertOne(order)
+                .then(r => {
+                    res.json({id: 1, msg: 'success'});
+                    //notice to everyone for
+                    req.data.wss.broadcast(JSON.stringify({index: pIndex, amount: product.amount}));
+                })
+                .catch(r => {
+                    console.log("error: ", r);
+                    res.json({id: 0, msg: 'failed'});
+                });
+        })();
     });
 
     _router.use('/query-star', function (req, res, next) {
@@ -181,4 +178,38 @@ function mergeOptions(options, defaults) {
     for (var key in defaults) {
         options[key] = options[key] || defaults[key];
     }
+}
+
+function getAllSalesVol(col) {
+    col.aggregate([
+        {
+            $match: {
+                date: {
+                    $gte: new Date(new Date() - 900000)
+                }
+            }
+        },
+        {
+            $group: {
+                _id: "$productId",
+                count: {$sum: 1}
+            }
+        }
+    ])
+        .toArray()
+        .then(log)
+        .catch(console.log);
+}
+
+/**
+ * get product sales amount
+ * @param col
+ * @param pid
+ * @return Promise
+ */
+function getProductSalesVol(col, pid) {
+    return col.find({date: {$gte: new Date(new Date() - 900000)}, productId: pid})
+        .count()
+        .then(log)
+        .catch(console.log);
 }
