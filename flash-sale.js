@@ -49,15 +49,13 @@ exports.setRouter = function (router) {
             let _userInfo = req.session.userInfo;
 
             req.data.db.collection('flashsale')
-                .find({openid: _userInfo.openId})
+                .find({"user.openId": _userInfo.openId, date: {$gte: new Date(new Date() - 300000)}})
                 .toArray()
                 .then(log)
                 .then(doc => {
-                    let products = [];
-                    doc.forEach(order => {
-                        if (new Date() - order.date < 900000) products.push(order.product);
-                    });
-                    res.json(products);
+                    res.json(doc.map(item => {
+                        return item.product;
+                    }));
                 })
                 .catch(console.log);
         } else {
@@ -66,23 +64,38 @@ exports.setRouter = function (router) {
     });
 
     _router.use('/init', function (req, res, next) {
-        res.json(JSON.stringify(req.data.products));
+        (async function () {
+            let productsGroup = await getAllSalesVol(req.data.db.collection('flashsale'));
+            console.log("init products group: ", productsGroup);
+            let _products = JSON.parse(JSON.stringify(req.data.products));
+            let products = _products.map(product => {
+                productsGroup.forEach(group => {
+                    if (group._id === product.id) {
+                        product.amount -= group.count;
+                    }
+                });
+                return product;
+            });
+            //console.log("req.data.products: ", req.data.products);
+            res.json(JSON.stringify(products));
+        })();
     });
 
     _router.use('/buy', function (req, res, next) {
-        (async function() {
+        (async function () {
             if (!'userInfo' in req.session) return;
 
             const pid = req.query.productId;
-            const products = req.data.products;
+            const products = JSON.parse(JSON.stringify(req.data.products));
             const col = req.data.db.collection('flashsale');
 
             let product = products.find(p => p.id === pid);
-            let pIndex = products.findIndex(p=>p.id===pid);
+            let pIndex = products.findIndex(p => p.id === pid);
             const store = product.amount - await getProductSalesVol(col, pid);
-            if (store <= 0) return product;
+            if (store <= 0) return;
 
-            product.amount--;
+            product.amount = store - 1;
+            console.log("req.data.products: ", req.data.products);
             let order = {
                 user: req.session.userInfo,
                 product: product,
@@ -180,24 +193,29 @@ function mergeOptions(options, defaults) {
     }
 }
 
+/**
+ * get all sales by group
+ * @param col
+ * @returns {Promise<T | void>}
+ */
 function getAllSalesVol(col) {
-    col.aggregate([
+    return col.aggregate([
         {
             $match: {
                 date: {
-                    $gte: new Date(new Date() - 900000)
+                    $gte: new Date(new Date() - 300000)
                 }
             }
         },
         {
             $group: {
-                _id: "$productId",
+                _id: "$product.id",
                 count: {$sum: 1}
             }
         }
     ])
         .toArray()
-        .then(log)
+        //.then(log)
         .catch(console.log);
 }
 
@@ -208,8 +226,19 @@ function getAllSalesVol(col) {
  * @return Promise
  */
 function getProductSalesVol(col, pid) {
-    return col.find({date: {$gte: new Date(new Date() - 900000)}, productId: pid})
+    return col.find({date: {$gte: new Date(new Date() - 300000)}, "product.id": pid})
         .count()
         .then(log)
         .catch(console.log);
+}
+
+function deepCopy(obj){
+    if(typeof obj != 'object'){
+        return obj;
+    }
+    var newobj = {};
+    for ( var attr in obj) {
+        newobj[attr] = deepCopy(obj[attr]);
+    }
+    return newobj;
 }
